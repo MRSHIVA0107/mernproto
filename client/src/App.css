@@ -1,0 +1,199 @@
+:root {
+  --bg-dark: #000000;
+  --card-bg: #1a1a1a;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --accent-orange: #f59e0b;
+  --accent-purple: #8b5cf6;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 25px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.tab-btn.active {
+  color: var(--text-main);
+}
+
+.tab-btn.active i, .tab-btn.active span {
+  color: var(--accent-blue);
+}
+
+.tab-btn.Event.active { color: var(--accent-blue); }
+.tab-btn.Birthday.active { color: var(--accent-red); }
+.tab-btn.Anniversary.active { color: var(--accent-orange); }
+.tab-btn.Countdown.active { color: var(--accent-purple); }
+
+/* Form */
+.form-container {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  background: #262626;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.toggle-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Calendar */
+.calendar-section {
+  margin-bottom: 30px;
+}
+
+.month-label {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+  text-align: center;
+}
+
+.day-name {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.day-number {
+  font-size: 16px;
+  padding: 10px 0;
+}
+
+.day-number.today {
+  background: var(--accent-blue);
+  border-radius: 10px;
+}
+
+/* Event Cards */
+.event-card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-card-title {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-card-subtitle {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.event-card-countdown {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot.Event { background: var(--accent-blue); }
+.dot.Birthday { background: var(--accent-red); }
+.dot.Anniversary { background: var(--accent-orange); }
+.dot.Countdown { background: var(--accent-purple); }
+
+.save-btn {
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
