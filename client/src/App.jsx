@@ -6,6 +6,7 @@ const App = () => {
     const [events, setEvents] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [currentView, setCurrentView] = useState('Month'); // 'Year', 'Month', 'Week', 'Day'
 
     useEffect(() => {
         fetchEvents();
@@ -33,7 +34,8 @@ const App = () => {
     };
 
     const handleTabClick = (view) => {
-        alert(`${view} view is not implemented yet in this basic demo.`);
+        setCurrentView(view);
+        setShowForm(false);
     };
 
     const deleteEvent = async (id) => {
@@ -58,24 +60,61 @@ const App = () => {
         Countdown: { icon: '⏳', color: 'Countdown' }
     };
 
+    const renderYearView = () => {
+        const months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        
+        return (
+            <div className="year-grid animate-in">
+                {months.map((month, idx) => (
+                    <div key={month} className="year-month-card glass" onClick={() => handleTabClick('Month')}>
+                        <div className="year-month-name">{month}</div>
+                        <div className="mini-days-grid">
+                            {[...Array(30)].map((_, i) => (
+                                <div key={i} className="mini-day">·</div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <div className="container">
-            <header>
-                <div className="month-label">2026 / 6</div>
-                <div style={{display: 'flex', gap: '15px', fontSize: '20px'}}>
-                    <span style={{cursor: 'pointer'}} title="Add Event" onClick={() => {
-                        if (showForm) {
-                            setShowForm(false);
-                        } else {
-                            handleAddClick();
-                        }
-                    }}>{showForm ? '✕' : '+'}</span>
-                    <span style={{cursor: 'pointer'}} title="Settings" onClick={() => alert('Settings menu coming soon!')}>⋮</span>
+            <header className="animate-in">
+                <div className="month-label">{currentView === 'Year' ? '2026' : 'June 2026'}</div>
+                <div style={{display: 'flex', gap: '15px', alignItems: 'center'}}>
+                    <div 
+                        className="glass"
+                        style={{
+                            width: '40px', 
+                            height: '40px', 
+                            borderRadius: '50%', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            fontSize: '24px'
+                        }}
+                        onClick={() => {
+                            if (showForm) {
+                                setShowForm(false);
+                            } else {
+                                handleAddClick();
+                            }
+                        }}
+                    >
+                        {showForm ? '✕' : '+'}
+                    </div>
+                    <span style={{cursor: 'pointer', fontSize: '24px'}} title="Settings" onClick={() => alert('Settings menu coming soon!')}>⋮</span>
                 </div>
             </header>
 
-            {!showForm && (
-                <div className="calendar-section">
+            {!showForm && currentView === 'Month' && (
+                <div className="calendar-section animate-in">
                     <div className="days-grid">
                         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
                             <div key={d} className="day-name">{d}</div>
@@ -83,7 +122,7 @@ const App = () => {
                         {[...Array(30)].map((_, i) => (
                             <div 
                                 key={i} 
-                                className={`day-number ${i + 1 === 21 ? 'today' : ''}`}
+                                className={`day-number ${i + 1 === 21 ? 'today glass' : ''}`}
                                 onClick={() => handleDateClick(i + 1)}
                                 style={{cursor: 'pointer'}}
                             >
@@ -93,22 +132,25 @@ const App = () => {
                     </div>
                 </div>
             )}
+
+            {!showForm && currentView === 'Year' && renderYearView()}
             
             {showForm && (
-                <EventForm 
-                    initialDate={selectedDate}
-                    onEventAdded={(newEvent) => {
-                        setEvents([...events, newEvent]);
-                        setShowForm(false);
-                        setSelectedDate(null);
-                    }} 
-                />
+                <div className="animate-in">
+                    <EventForm 
+                        initialDate={selectedDate}
+                        onEventAdded={(newEvent) => {
+                            setEvents([...events, newEvent]);
+                            setShowForm(false);
+                            setSelectedDate(null);
+                        }} 
+                    />
+                </div>
             )}
 
-
-            <div className="event-list">
+            <div className="event-list animate-in">
                 {events.map(event => (
-                    <div key={event._id} className="event-card">
+                    <div key={event._id} className="event-card glass">
                         <div className="event-card-header">
                             <div className="event-card-title">
                                 <span className={`dot ${event.type}`}></span>
@@ -140,30 +182,42 @@ const App = () => {
                 ))}
             </div>
 
-            <nav style={{
+            <nav className="glass" style={{
                 position: 'fixed', 
-                bottom: 0, 
+                bottom: 25, 
                 left: '50%', 
                 transform: 'translateX(-50%)', 
-                width: '100%', 
-                maxWidth: '500px', 
-                background: '#000', 
+                width: 'calc(100% - 40px)', 
+                maxWidth: '430px', 
+                borderRadius: '30px',
                 display: 'flex', 
                 justifyContent: 'space-around', 
                 padding: '15px 0',
-                borderTop: '1px solid #222'
+                zIndex: 1000,
+                boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
             }}>
-                <div onClick={() => handleTabClick('Year')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '10px', color: '#888'}}>
-                    <span>📅</span>Year
+                <div onClick={() => handleTabClick('Year')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: '600', color: currentView === 'Year' ? 'white' : '#777', transition: '0.3s'}}>
+                    <span style={{fontSize: '18px', opacity: currentView === 'Year' ? 1 : 0.5}}>🗓️</span>Year
                 </div>
-                <div onClick={() => setShowForm(false)} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '10px', color: 'white'}}>
-                    <span>📅</span>Month
+                <div onClick={() => handleTabClick('Month')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: '600', color: currentView === 'Month' ? 'white' : '#777', transition: '0.3s'}}>
+                    <span style={{fontSize: '18px', opacity: currentView === 'Month' ? 1 : 0.5}}>📅</span>Month
                 </div>
-                <div onClick={() => handleTabClick('Week')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '10px', color: '#888'}}>
-                    <span>📅</span>Week
+                <div onClick={() => handleTabClick('Week')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: '600', color: currentView === 'Week' ? 'white' : '#777', transition: '0.3s'}}>
+                    <span style={{fontSize: '18px', opacity: currentView === 'Week' ? 1 : 0.5}}>🗓️</span>Week
                 </div>
-                <div onClick={() => handleTabClick('Day')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '10px', color: '#888'}}>
-                    <span style={{fontWeight: 'bold'}}>21</span>Day
+                <div onClick={() => handleTabClick('Day')} style={{display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: '600', color: currentView === 'Day' ? 'white' : '#777', transition: '0.3s'}}>
+                    <div style={{
+                        width: '24px', 
+                        height: '24px', 
+                        background: currentView === 'Day' ? 'white' : 'transparent',
+                        color: currentView === 'Day' ? 'black' : '#777',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        border: currentView === 'Day' ? 'none' : '2px solid #777'
+                    }}>21</div>Day
                 </div>
             </nav>
         </div>
@@ -171,4 +225,3 @@ const App = () => {
 };
 
 export default App;
-
