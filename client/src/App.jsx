@@ -14,7 +14,7 @@ const App = () => {
 
     const fetchEvents = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/events');
+            const res = await axios.get('/api/events');
             setEvents(res.data);
         } catch (err) {
             console.error('Error fetching events', err);
@@ -40,7 +40,7 @@ const App = () => {
 
     const deleteEvent = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/events/${id}`);
+            await axios.delete(`/api/events/${id}`);
             setEvents(events.filter(event => event._id !== id));
         } catch (err) {
             console.error('Error deleting event', err);

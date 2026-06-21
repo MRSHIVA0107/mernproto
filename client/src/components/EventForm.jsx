@@ -43,7 +43,7 @@ const EventForm = ({ onEventAdded, initialDate }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/api/events', { ...formData, type });
+            const res = await axios.post('/api/events', { ...formData, type });
             onEventAdded(res.data);
             // Reset but keep some defaults
             setFormData({
